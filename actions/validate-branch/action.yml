@@ -1,0 +1,18 @@
+name: 'Validate Branch'
+description: 'Validates that the Branch is clean and the Base Branch is not locked.'
+inputs:
+  github-token:
+    description: 'GitHub Token'
+    required: true
+  org-name:
+    description: 'Organisation Name'
+    required: true
+  repo-name:
+    description: 'Repository Name'
+    required: true
+  base-branch:
+    description: 'Base Branch Name'
+    required: true
+runs:
+  using: 'node20'
+  main: 'index.js'

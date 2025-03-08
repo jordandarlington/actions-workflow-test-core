@@ -1,0 +1,10 @@
+name: 'Validate Pull Request'
+description: 'Validates that the Pull Request is ready for review.'
+inputs:
+  github-token:
+    description: 'GitHub Token'
+    required: true
+
+runs:
+  using: 'node20'
+  main: 'index.js'
