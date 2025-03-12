@@ -27572,6 +27572,10 @@ async function run() {
                 core.setFailed(`Error: ${error.message}`);
                 return;
             }
+            if (stderr) {
+                core.setFailed(`stderr: ${stderr}`);
+                return;
+            }
             core.info(`stdout: ${stdout}`);
         });
 
