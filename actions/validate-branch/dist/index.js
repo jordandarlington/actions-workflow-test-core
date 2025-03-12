@@ -27556,7 +27556,7 @@ module.exports = parseParams
 /************************************************************************/
 var __webpack_exports__ = {};
 const core = __nccwpck_require__(8902);
-const path = __nccwpck_require__(6928);
+// const path = require('path');
 const { exec } = __nccwpck_require__(5317);
 
 async function run() {
@@ -27564,9 +27564,10 @@ async function run() {
         const orgName = core.getInput('org-name');
         const repoName = core.getInput('repo-name');
         const baseBranch = core.getInput('base-branch');
-        const scriptPath = __nccwpck_require__.ab + "check-branch-lock.sh";
+        // const scriptPath = path.resolve(__dirname, 'scripts/check-branch-lock.sh');
 
-        exec(`${scriptPath} ${orgName} ${repoName} ${baseBranch}`, (error, stdout, stderr) => {
+        exec(`gh api repos/${orgName}/${repoName}/branches/${baseBranch}/protection --jq '.lock_branch.enabled' 2>/dev/null`, (error, stdout, stderr) => {
+        // exec(`${scriptPath} ${orgName} ${repoName} ${baseBranch}`, (error, stdout, stderr) => {
             if (error) {
                 core.setFailed(`Error: ${error.message}`);
                 return;
