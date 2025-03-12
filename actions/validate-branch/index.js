@@ -33,9 +33,9 @@ async function run() {
         });
 
         if (data.lock_branch && data.lock_branch.enabled) {
-            core.info(`Branch protection is enabled for ${baseBranch}`);
+            core.setFailed(`${baseBranch} branch is locked`);
         } else {
-            core.setFailed(`Branch protection is not enabled for ${baseBranch}`);
+            core.info(`${baseBranch} branch is not locked`);
         }
 
     } catch (error) {
