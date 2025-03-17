@@ -1,9 +1,10 @@
 const core = require('@actions/core');
 const { Octokit } = require('@octokit/rest');
-// const path = require('path');
-// const { exec } = require('child_process');
+const { logMessage } = require('../../utils/logging');
 
 async function run() {
+    logMessage('validate-branch | START');
+
     try {
         const orgName = core.getInput('org-name');
         const repoName = core.getInput('repo-name');
@@ -11,20 +12,6 @@ async function run() {
         const token = core.getInput('github-token');
 
         const octokit = new Octokit({ auth: token });
-        // const scriptPath = path.resolve(__dirname, 'scripts/check-branch-lock.sh');
-
-        // exec(`gh api repos/${orgName}/${repoName}/branches/${baseBranch}/protection --jq '.lock_branch.enabled' 2>/dev/null`, (error, stdout, stderr) => {
-        // // exec(`${scriptPath} ${orgName} ${repoName} ${baseBranch}`, (error, stdout, stderr) => {
-        //     if (error) {
-        //         core.setFailed(`Error: ${error.message}`);
-        //         return;
-        //     }
-        //     if (stderr) {
-        //         core.setFailed(`stderr: ${stderr}`);
-        //         return;
-        //     }
-        //     core.info(`stdout: ${stdout}`);
-        // });
 
         const { data } = await octokit.repos.getBranchProtection({
             owner: orgName,
@@ -33,14 +20,17 @@ async function run() {
         });
 
         if (data.lock_branch && data.lock_branch.enabled) {
-            core.setFailed(`${baseBranch} branch is locked`);
+            throw new Error(`${baseBranch} branch is locked`);
         } else {
-            core.info(`${baseBranch} branch is not locked`);
+            logMessage(`validate-branch | Check Branch Lock Status | SUCCESS`);
         }
 
     } catch (error) {
-        core.setFailed(error.message);
+        core.setFailed(logMessage(`validate-branch | FAILURE | ${error.message}`));
+        return;
     }
+
+    logMessage('validate-branch | END');
 }
 
 run();
