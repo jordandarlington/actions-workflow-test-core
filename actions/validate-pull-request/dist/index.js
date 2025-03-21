@@ -45,9 +45,7 @@ async function run() {
 
 module.exports = run;
 
-if (require.main === require.cache[eval('__filename')]) {
-    run();
-}
+run();
 
 /***/ }),
 
