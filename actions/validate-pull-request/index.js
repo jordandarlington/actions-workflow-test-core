@@ -37,4 +37,8 @@ async function run() {
     logMessage('validate-pull-request | END');
 }
 
-run();
+module.exports = run;
+
+if (require.main === module) {
+    run();
+}
